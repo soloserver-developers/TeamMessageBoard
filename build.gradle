@@ -57,7 +57,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
 
     implementation 'team.aura_dev.lib.slf4j-plugin.spigot:slf4j-plugin-spigot:1.2.0.39:1.7.25'
-    implementation 'com.zaxxer:HikariCP:4.0.1'
+    implementation 'com.zaxxer:HikariCP:4.0.2'
     implementation 'mysql:mysql-connector-java:8.0.21'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.6.2'
 }
