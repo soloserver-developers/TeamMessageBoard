@@ -19,7 +19,9 @@ package page.nafuchoco.teammessageboard.database;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
-import page.nafuchoco.soloservercore.team.PlayersTeam;
+import page.nafuchoco.soloservercore.data.PlayersTeam;
+import page.nafuchoco.soloservercore.database.DatabaseConnector;
+import page.nafuchoco.soloservercore.database.DatabaseTable;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -120,6 +122,26 @@ public class MessagesTable extends DatabaseTable {
             ps.setTimestamp(4, new Timestamp(message.getSentDate().getTime()));
             ps.setString(5, message.getSubject());
             ps.setString(6, gson.toJson(message.getMessage()));
+            ps.execute();
+        }
+    }
+
+    public void deleteMessage(@NotNull UUID messageId) throws SQLException {
+        try (Connection connection = getConnector().getConnection();
+             PreparedStatement ps = connection.prepareStatement(
+                     "DELETE FROM " + getTablename() + " WHERE id = ?"
+             )) {
+            ps.setString(1, messageId.toString());
+            ps.execute();
+        }
+    }
+
+    public void deleteAllMessages(@NotNull UUID teamId) throws SQLException {
+        try (Connection connection = getConnector().getConnection();
+             PreparedStatement ps = connection.prepareStatement(
+                     "DELETE FROM " + getTablename() + " WHERE target_team = ?"
+             )) {
+            ps.setString(1, teamId.toString());
             ps.execute();
         }
     }

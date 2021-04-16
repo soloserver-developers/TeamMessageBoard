@@ -22,13 +22,13 @@ plugins {
 }
 
 group = 'page.nafuchoco'
-version = '1.0.0'
+version = '1.1.0-RC.1'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 shadowJar {
-    archiveName = "${rootProject.name}.${extension}"
+    archiveFileName.set(rootProject.name + '.' + archiveExtension.get())
 }
 
 repositories {
@@ -50,8 +50,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT'
-    compileOnly 'com.github.soloserver-developers:SoloServerCore3:3.5.0'
+    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'com.github.soloserver-developers:SoloServerCore3:4.0.0-RC.1'
 
     implementation 'org.jetbrains:annotations:16.0.2'
     implementation 'com.google.code.gson:gson:2.8.6'

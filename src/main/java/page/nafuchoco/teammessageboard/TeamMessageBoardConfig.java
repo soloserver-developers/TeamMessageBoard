@@ -17,6 +17,7 @@
 package page.nafuchoco.teammessageboard;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import page.nafuchoco.soloservercore.SoloServerCoreConfig;
 
 public class TeamMessageBoardConfig {
     private static final TeamMessageBoard instance = TeamMessageBoard.getInstance();
@@ -27,7 +28,7 @@ public class TeamMessageBoardConfig {
         FileConfiguration config = instance.getConfig();
 
         if (initConfig == null) {
-            DatabaseType databaseType = DatabaseType.valueOf(config.getString("initialization.database.type"));
+            SoloServerCoreConfig.DatabaseType databaseType = SoloServerCoreConfig.DatabaseType.valueOf(config.getString("initialization.database.type"));
             String address = config.getString("initialization.database.address");
             int port = config.getInt("initialization.database.port", 3306);
             String database = config.getString("initialization.database.database");
@@ -42,29 +43,8 @@ public class TeamMessageBoardConfig {
         return initConfig;
     }
 
-    public enum DatabaseType {
-        MARIADB("org.mariadb.jdbc.Driver", "jdbc:mariadb://"),
-        MYSQL("com.mysql.jdbc.Driver", "jdbc:mysql://");
-
-        private final String jdbcClass;
-        private final String addressPrefix;
-
-        DatabaseType(String jdbcClass, String addressPrefix) {
-            this.jdbcClass = jdbcClass;
-            this.addressPrefix = addressPrefix;
-        }
-
-        public String getJdbcClass() {
-            return jdbcClass;
-        }
-
-        public String getAddressPrefix() {
-            return addressPrefix;
-        }
-    }
-
     public static class InitConfig {
-        private DatabaseType databaseType;
+        private SoloServerCoreConfig.DatabaseType databaseType;
         private String address;
         private int port;
         private String database;
@@ -72,7 +52,7 @@ public class TeamMessageBoardConfig {
         private String password;
         private String tablePrefix;
 
-        public InitConfig(DatabaseType databaseType, String address, int port, String database, String username, String password, String tablePrefix) {
+        public InitConfig(SoloServerCoreConfig.DatabaseType databaseType, String address, int port, String database, String username, String password, String tablePrefix) {
             this.databaseType = databaseType;
             this.address = address;
             this.port = port;
@@ -82,7 +62,7 @@ public class TeamMessageBoardConfig {
             this.tablePrefix = tablePrefix;
         }
 
-        public DatabaseType getDatabaseType() {
+        public SoloServerCoreConfig.DatabaseType getDatabaseType() {
             return databaseType;
         }
 

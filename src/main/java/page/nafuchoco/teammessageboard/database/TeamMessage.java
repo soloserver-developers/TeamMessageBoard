@@ -16,7 +16,7 @@
 
 package page.nafuchoco.teammessageboard.database;
 
-import page.nafuchoco.soloservercore.team.PlayersTeam;
+import page.nafuchoco.soloservercore.data.PlayersTeam;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -68,7 +68,6 @@ public class TeamMessage {
         private final UUID id;
         private final UUID senderPlayer;
         private UUID targetTeam;
-        private Date sentDate;
         private String subject;
         private List<String> message;
 
@@ -88,10 +87,6 @@ public class TeamMessage {
 
         public UUID getTargetTeam() {
             return targetTeam;
-        }
-
-        public Date getSentDate() {
-            return sentDate;
         }
 
         public String getSubject() {

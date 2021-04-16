@@ -3,15 +3,15 @@ version: @version@
 main: page.nafuchoco.teammessageboard.TeamMessageBoard
 api-version: 1.16
 prefix: TMB
-depend: [SoloServerCore]
-authors: [NAFU_at]
+depend: [ SoloServerCore ]
+authors: [ NAFU_at ]
 description: Provide a message board that can be shared with team members.
 website: https://nafuchoco.page/
 
 commands:
   messageboard:
     description: Message Board.
-    aliases: [board]
+    aliases: [ board ]
 
 permissions:
   messageboard.*:
@@ -23,6 +23,7 @@ permissions:
       messageboard.send: true
       messageboard.check: true
       messageboard.read: true
+      messageboard.delete: true
 
   messageboard.edit:
     children:

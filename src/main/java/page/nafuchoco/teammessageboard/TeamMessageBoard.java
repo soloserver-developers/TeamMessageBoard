@@ -30,8 +30,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import page.nafuchoco.soloservercore.SoloServerApi;
-import page.nafuchoco.soloservercore.team.PlayersTeam;
-import page.nafuchoco.teammessageboard.database.DatabaseConnector;
+import page.nafuchoco.soloservercore.data.PlayersTeam;
+import page.nafuchoco.soloservercore.database.DatabaseConnector;
 import page.nafuchoco.teammessageboard.database.MessagesTable;
 import page.nafuchoco.teammessageboard.database.TeamMessage;
 
@@ -78,7 +78,7 @@ public final class TeamMessageBoard extends JavaPlugin implements Listener {
             getLogger().log(Level.WARNING, "An error occurred while initializing the database table.", e);
         }
 
-        soloServerApi = SoloServerApi.getSoloServerApi();
+        soloServerApi = SoloServerApi.getInstance();
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 
@@ -93,7 +93,7 @@ public final class TeamMessageBoard extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
-        PlayersTeam joinedTeam = soloServerApi.getPlayerJoinedTeam(event.getPlayer().getUniqueId());
+        PlayersTeam joinedTeam = soloServerApi.getPlayersTeam(event.getPlayer());
         if (joinedTeam != null) {
             try {
                 List<TeamMessage> messages = messagesTable.getNewMessage(joinedTeam, new Date(event.getPlayer().getLastPlayed()));
@@ -115,7 +115,7 @@ public final class TeamMessageBoard extends JavaPlugin implements Listener {
                 sender.sendMessage(ChatColor.RED + "You can't run this command because you don't have permission.");
             } else switch (args[0]) {
                 case "create": {
-                    PlayersTeam joinedTeam = soloServerApi.getPlayerJoinedTeam(player.getUniqueId());
+                    PlayersTeam joinedTeam = soloServerApi.getPlayersTeam(player);
                     if (joinedTeam != null) {
                         TeamMessage.TeamMessageBuilder builder = new TeamMessage.TeamMessageBuilder(player.getUniqueId());
                         builder.setTargetTeam(joinedTeam);
@@ -197,7 +197,7 @@ public final class TeamMessageBoard extends JavaPlugin implements Listener {
                     break;
 
                 case "check": {
-                    PlayersTeam joinedTeam = soloServerApi.getPlayerJoinedTeam(player.getUniqueId());
+                    PlayersTeam joinedTeam = soloServerApi.getPlayersTeam(player);
                     if (joinedTeam != null) {
                         try {
                             List<TeamMessage> messages = messagesTable.getAllMessage(joinedTeam);
@@ -223,6 +223,23 @@ public final class TeamMessageBoard extends JavaPlugin implements Listener {
                     }
                     break;
 
+                case "delete":
+                    try {
+                        TeamMessage message = messagesTable.getMessage(UUID.fromString(args[1]));
+                        if (message != null) {
+                            if (message.getSenderPlayer().equals(player.getUniqueId())) {
+                                messagesTable.deleteMessage(UUID.fromString(args[1]));
+                                sender.sendMessage(ChatColor.GREEN + "[TMB] メッセージを削除しました。");
+                            } else {
+                                sender.sendMessage(ChatColor.RED + "[TMB] メッセージは作者のみ削除することができます。");
+                            }
+                        }
+                    } catch (SQLException e) {
+                        sender.sendMessage(ChatColor.RED + "[TMB] メッセージの削除に失敗しました。");
+                        getLogger().log(Level.WARNING, "An error occurred while deleting the message.", e);
+                    }
+                    break;
+
             }
         } else {
             sender.sendMessage(ChatColor.RED + "This command must be executed in-game.");
@@ -232,8 +249,24 @@ public final class TeamMessageBoard extends JavaPlugin implements Listener {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        if (args.length == 1)
-            return Arrays.asList("create", "subject", "message", "send", "check", "read");
+        if (args.length == 1) {
+            return Arrays.asList("create", "subject", "message", "send", "check", "read", "delete");
+        } else if (args.length >= 2 && (args[0].equals("check") || args[0].equals("delete"))) {
+            List ids = new LinkedList();
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                PlayersTeam joinedTeam = soloServerApi.getPlayersTeam(player);
+                if (joinedTeam != null) {
+                    try {
+                        List<TeamMessage> messages = messagesTable.getAllMessage(joinedTeam);
+                        messages.forEach(message -> ids.add(message.getId()));
+                        return ids;
+                    } catch (SQLException e) {
+                        getLogger().log(Level.WARNING, "An error occurred while fetching the messageIds.", e);
+                    }
+                }
+            }
+        }
         return null;
     }
 
@@ -259,7 +292,7 @@ public final class TeamMessageBoard extends JavaPlugin implements Listener {
     }
 
     public void sendMessageList(Player player, List<TeamMessage> messages) {
-        PlayersTeam joinedTeam = soloServerApi.getPlayerJoinedTeam(player.getUniqueId());
+        PlayersTeam joinedTeam = soloServerApi.getPlayersTeam(player);
         if (joinedTeam != null) {
             player.sendMessage(ChatColor.AQUA + "====== Team Message! ======");
             messages.forEach(message -> {
