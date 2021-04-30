@@ -51,7 +51,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
-    compileOnly 'com.github.soloserver-developers:SoloServerCore3:4.0.0-RC.1'
+    compileOnly 'com.github.soloserver-developers:SoloServerCore3:4.0.0-RC.4'
 
     implementation 'org.jetbrains:annotations:16.0.2'
     implementation 'com.google.code.gson:gson:2.8.6'
