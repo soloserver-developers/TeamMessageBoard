@@ -1,16 +1,21 @@
 # TeamMessageBoard
+
 TeamMessageBoardはSoloServerCore3のアドオンとして動作するメッセージボードプラグインです。  
 このプラグインはチームで共有できるメッセージボードを提供します。
 
 ## 動作要項
+
 - Spigot 1.15.x
 - MySQL or MariaDB 5.x ~
 
 ### 前提プラグイン
-- SoloServerCore 3.2.x ~
+
+- SoloServerCore 4.x ~
 
 ## License
+
 This plugin is published under Apache License 2.0.
+
 ```
 Copyright 2020 NAFU_at.
 
