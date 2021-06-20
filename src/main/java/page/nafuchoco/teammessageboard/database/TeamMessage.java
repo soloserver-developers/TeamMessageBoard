@@ -69,7 +69,7 @@ public class TeamMessage {
         private final UUID senderPlayer;
         private UUID targetTeam;
         private String subject;
-        private List<String> message;
+        private final List<String> message;
 
         public TeamMessageBuilder(UUID senderPlayer) {
             this.id = UUID.randomUUID();

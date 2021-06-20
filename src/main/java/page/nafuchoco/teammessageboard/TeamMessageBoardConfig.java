@@ -44,13 +44,13 @@ public class TeamMessageBoardConfig {
     }
 
     public static class InitConfig {
-        private SoloServerCoreConfig.DatabaseType databaseType;
-        private String address;
-        private int port;
-        private String database;
-        private String username;
-        private String password;
-        private String tablePrefix;
+        private final SoloServerCoreConfig.DatabaseType databaseType;
+        private final String address;
+        private final int port;
+        private final String database;
+        private final String username;
+        private final String password;
+        private final String tablePrefix;
 
         public InitConfig(SoloServerCoreConfig.DatabaseType databaseType, String address, int port, String database, String username, String password, String tablePrefix) {
             this.databaseType = databaseType;

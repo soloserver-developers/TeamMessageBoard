@@ -24,18 +24,25 @@ plugins {
 group = 'page.nafuchoco'
 version = '1.1.0'
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
-
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(16)
+    }
+}
 shadowJar {
     archiveFileName.set(rootProject.name + '.' + archiveExtension.get())
 }
 
 repositories {
     mavenCentral()
+    /* Unsolvable Problems
     maven {
         name = 'spigotmc-repo'
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    */
+    maven {
+        url = 'https://papermc.io/repo/repository/maven-public/'
     }
     maven {
         name = 'sonatype'
@@ -50,7 +57,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT'
+    // compileOnly 'org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT'
+    compileOnly "io.papermc.paper:paper-api:1.17-R0.1-SNAPSHOT"
     compileOnly 'com.github.soloserver-developers:SoloServerCore3:4.0.0'
 
     implementation 'org.jetbrains:annotations:21.0.1'

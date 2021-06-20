@@ -89,7 +89,7 @@ public final class TeamMessageBoard extends JavaPlugin implements Listener {
             connector.close();
     }
 
-    private Map<Player, TeamMessage.TeamMessageBuilder> makingMessage = new HashMap<>();
+    private final Map<Player, TeamMessage.TeamMessageBuilder> makingMessage = new HashMap<>();
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
