@@ -1,5 +1,7 @@
 # TeamMessageBoard
 
+**このアドオンはSoloServerCore3に統合されました。**
+
 TeamMessageBoardはSoloServerCore3のアドオンとして動作するメッセージボードプラグインです。  
 このプラグインはチームで共有できるメッセージボードを提供します。
 
